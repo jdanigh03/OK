@@ -26,11 +26,6 @@ session_start(); // Iniciar la sesión
             width: 100px;
             height: auto;
         }
-        .navbar h1 {
-            margin: 0;
-            color: #ffffff;
-            font-size: 24px;
-        }
         .encuesta {
             margin-top: 50px;
         }
@@ -85,14 +80,16 @@ session_start(); // Iniciar la sesión
                     die("Conexión fallida: " . $conn->connect_error);
                 }
 
-                // Guarda el ID_evaluador en la sesión al recibirlo de index.php
-                if (isset($_POST['evaluador'])) {
+                // Guarda el ID_evaluador y el nombre del cliente en la sesión al recibirlos de index.php
+                if (isset($_POST['evaluador']) && isset($_POST['nombreCliente'])) {
                     $_SESSION['id_evaluador'] = $_POST['evaluador'];
+                    $_SESSION['nombre_cliente'] = $_POST['nombreCliente'];
                 }
 
-                // Verifica que el ID_evaluador de la sesión sea válido
-                if (isset($_POST['calificacion']) && isset($_SESSION['id_evaluador'])) {
+                // Verifica que el ID_evaluador de la sesión y el nombre del cliente sean válidos
+                if (isset($_POST['calificacion']) && isset($_SESSION['id_evaluador']) && isset($_SESSION['nombre_cliente'])) {
                     $id_evaluador = $_SESSION['id_evaluador'];
+                    $nombre_cliente = $_SESSION['nombre_cliente'];
 
                     // Verifica si el ID_evaluador existe en la tabla evaluadores
                     $verificarEvaluador = "SELECT ID FROM evaluadores WHERE ID = '$id_evaluador'";
@@ -102,7 +99,8 @@ session_start(); // Iniciar la sesión
                         $calificacion = $_POST['calificacion'];
                         $fechaActual = date('Y-m-d');
 
-                        $sqlEncuesta = "INSERT INTO encuesta (ID_evaluador, Calificación, Fecha) VALUES ('$id_evaluador', '$calificacion', '$fechaActual')";
+                        // Inserta la calificación junto con el nombre del cliente
+                        $sqlEncuesta = "INSERT INTO encuesta (ID_evaluador, Calificación, Fecha, cliente) VALUES ('$id_evaluador', '$calificacion', '$fechaActual', '$nombre_cliente')";
 
                         if ($conn->query($sqlEncuesta) === TRUE) {
                             $message = "Calificación registrada, gracias.";
