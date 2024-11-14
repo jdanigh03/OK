@@ -1,5 +1,5 @@
 <?php
-session_start(); // Iniciar la sesión
+session_start(); 
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -53,7 +53,7 @@ session_start(); // Iniciar la sesión
         .confirmation-message {
             margin-top: 20px;
             font-size: 20px;
-            color: #00FF00; /* Verde */
+            color: black; 
         }
     </style>
 </head>
@@ -65,7 +65,7 @@ session_start(); // Iniciar la sesión
         <h1>Encuesta de Satisfacción</h1>
         <h2>¿Cómo le atendieron en OK?</h2>
         <?php
-            $message = ""; // Variable para mostrar el mensaje de confirmación
+            $message = ""; 
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Conexión a la base de datos
@@ -80,26 +80,19 @@ session_start(); // Iniciar la sesión
                     die("Conexión fallida: " . $conn->connect_error);
                 }
 
-                // Guarda el ID_evaluador y el nombre del cliente en la sesión al recibirlos de index.php
                 if (isset($_POST['evaluador']) && isset($_POST['nombreCliente'])) {
                     $_SESSION['id_evaluador'] = $_POST['evaluador'];
                     $_SESSION['nombre_cliente'] = $_POST['nombreCliente'];
                 }
-
-                // Verifica que el ID_evaluador de la sesión y el nombre del cliente sean válidos
                 if (isset($_POST['calificacion']) && isset($_SESSION['id_evaluador']) && isset($_SESSION['nombre_cliente'])) {
                     $id_evaluador = $_SESSION['id_evaluador'];
                     $nombre_cliente = $_SESSION['nombre_cliente'];
-
-                    // Verifica si el ID_evaluador existe en la tabla evaluadores
                     $verificarEvaluador = "SELECT ID FROM evaluadores WHERE ID = '$id_evaluador'";
                     $resultado = $conn->query($verificarEvaluador);
 
                     if ($resultado->num_rows > 0) {
                         $calificacion = $_POST['calificacion'];
                         $fechaActual = date('Y-m-d');
-
-                        // Inserta la calificación junto con el nombre del cliente
                         $sqlEncuesta = "INSERT INTO encuesta (ID_evaluador, Calificación, Fecha, cliente) VALUES ('$id_evaluador', '$calificacion', '$fechaActual', '$nombre_cliente')";
 
                         if ($conn->query($sqlEncuesta) === TRUE) {
@@ -112,13 +105,11 @@ session_start(); // Iniciar la sesión
                     }
                 }
 
-                // Cierra la conexión
                 $conn->close();
             }
         ?>
         <div class="emoji-section">
             <?php
-                // Imprime las opciones de calificación
                 $labels = ['Malo', 'Regular', 'Neutral', 'Bueno', 'Excelente'];
                 for ($i = 1; $i <= 5; $i++) {
                     echo '<form action="encuesta.php" method="post" style="display:inline-block;">';
@@ -132,7 +123,6 @@ session_start(); // Iniciar la sesión
             ?>
         </div>
         <?php
-            // Muestra el mensaje de confirmación si existe
             if (!empty($message)) {
                 echo '<div class="confirmation-message">'.$message.'</div>';
             }
