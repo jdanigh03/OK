@@ -2,7 +2,7 @@
 $servername = "sql104.infinityfree.com"; 
 $username = "if0_37710230";              
 $password = "78822909Dani";             
-$dbname = "ok"; 
+$dbname = "if0_37710230_ok";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

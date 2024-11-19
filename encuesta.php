@@ -69,10 +69,11 @@ session_start();
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Conexión a la base de datos
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "OK";
+                $servername = "sql104.infinityfree.com";
+                $username = "if0_37710230";
+                $password = "78822990Dani";
+                $dbname = "if0_37710230_ok";
+
 
                 $conn = new mysqli($servername, $username, $password, $dbname);
 
