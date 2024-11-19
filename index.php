@@ -21,20 +21,33 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/index.css">
     <title>Formulario de Evaluación</title>
     <style>
-        #nombreCliente {
-            width: 95%; 
-        }
         body {
             font-family: Arial, sans-serif;
-            background-color: #002366;
-            color: #ffffff;
+            background-color: #002366; 
             margin: 0;
             padding: 20px;
+            color: #ffffff; 
             text-align: center;
         }
+
+        .navbar {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar img {
+            width: 100px;
+            height: auto;
+        }
+        .navbar h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+        }
+
         form {
             background-color: #001a4d; 
             border-radius: 15px;
@@ -43,12 +56,14 @@ $result = $conn->query($sql);
             margin: 50px auto;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
+
         label {
             display: block;
             margin-bottom: 8px;
             color: #ffffff; 
             font-weight: bold;
         }
+
         select, input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -59,8 +74,9 @@ $result = $conn->query($sql);
             color: #002366; 
             outline: none;
         }
+
         input[type="submit"] {
-            background-color: #ff0000; 
+            background-color: #ff0000;
             color: #ffffff; 
             border: none;
             padding: 12px 20px;
@@ -69,6 +85,7 @@ $result = $conn->query($sql);
             font-size: 16px;
             transition: background-color 0.3s;
         }
+
         input[type="submit"]:hover {
             background-color: #cc0000; 
         }
