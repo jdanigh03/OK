@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario y Encuesta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #002366; 
+            margin: 0;
+            padding: 20px;
+            color: #ffffff; 
+            text-align: center;
+        }
+
+        .navbar {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            width: 100px;
+            height: auto;
+        }
+
+        form {
+            background-color: #001a4d; 
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff; 
+            font-weight: bold;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #002366; 
+            border-radius: 5px;
+            background-color: #ffffff; 
+            color: #002366; 
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #ff0000;
+            color: #ffffff; 
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #cc0000; 
+        }
+
+        .encuesta {
+            margin-top: 50px;
+            display: none;
+        }
+
+        .emoji {
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .emoji img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%; 
+            border: 2px solid #002366; 
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .emoji img:hover {
+            transform: scale(1.1);
+        }
+
+        .label {
+            display: block;
+            margin-top: 5px;
+            font-weight: bold;
+            color: #ffffff; 
+        }
+
+        .mensaje-gracias {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .mensaje-gracias h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .mensaje-gracias button {
+            padding: 12px 20px;
+            background-color: #ff0000;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .mensaje-gracias button:hover {
+            background-color: #cc0000;
+        }
+
+        #nombreCliente{
+            width: 95%;
+        }
+        
+    </style>
+    <!-- Firebase -->
+    <script type="module">
+        // Importar funciones necesarias de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3jCg7V3Y_hSltPvQakmhs11oTE2mGFHE",
+            authDomain: "okaprendeingles-fb42e.firebaseapp.com",
+            projectId: "okaprendeingles-fb42e",
+            storageBucket: "okaprendeingles-fb42e.appspot.com",
+            messagingSenderId: "190093464111",
+            appId: "1:190093464111:web:a6cf62bca12db4fea1ecda",
+            measurementId: "G-Y4SKRCSKQG"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Función para guardar datos en Firestore
+        async function guardarDatos(evaluador, cliente, calificacion) {
+            try {
+                const fechaActual = new Date().toLocaleString("es-ES", { timeZone: "UTC" });
+                await addDoc(collection(db, "Encuesta"), {
+                    Evaluador: evaluador,
+                    Cliente: cliente,
+                    Calificacion: calificacion,
+                    Fecha: fechaActual
+                });
+            } catch (error) {
+                console.error("Error al guardar en Firebase: ", error);
+            }
+        }
+
+        // Interacción con el formulario
+        document.addEventListener("DOMContentLoaded", () => {
+            const formulario = document.getElementById("formulario-evaluacion");
+            const encuesta = document.getElementById("encuesta-satisfaccion");
+            const mensajeGracias = document.querySelector(".mensaje-gracias");
+            const tituloFormulario = document.querySelector("h1");
+            const emojis = document.querySelectorAll(".emoji");
+
+            formulario.addEventListener("submit", (e) => {
+                e.preventDefault(); // Evitar recarga de página
+
+                const evaluador = document.getElementById("evaluador").value;
+                const cliente = document.getElementById("nombreCliente").value;
+
+                if (evaluador && cliente) {
+                    // Ocultar formulario y mostrar encuesta
+                    formulario.style.display = "none";
+                    tituloFormulario.style.display = "none";
+                    encuesta.style.display = "block";
+
+                    // Configurar clic en cada emoji para registrar calificación
+                    emojis.forEach((emoji, index) => {
+                        emoji.addEventListener("click", () => {
+                            const calificacion = index + 1; // Índice + 1 para calificación (1 a 5)
+                            guardarDatos(evaluador, cliente, calificacion);
+
+                            // Mostrar mensaje de agradecimiento
+                            encuesta.style.display = "none";
+                            mensajeGracias.style.display = "block";
+                        });
+                    });
+                } else {
+                    alert("Por favor, complete todos los campos antes de continuar.");
+                }
+            });
+
+            // Volver al formulario al hacer clic en "Fin de la encuesta"
+            const botonFinEncuesta = document.querySelector(".mensaje-gracias button");
+            botonFinEncuesta.addEventListener("click", () => {
+                mensajeGracias.style.display = "none";
+                formulario.style.display = "block";
+                tituloFormulario.style.display = "block";
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <img src="img/Logos_Mesa de trabajo 1 copia.png" alt="Logo">
+    </div>
+
+    <h1>Formulario de Evaluación</h1>
+    <form id="formulario-evaluacion">
+        <label for="evaluador">Nombre del Evaluador:</label>
+        <select name="evaluador" id="evaluador" required>
+            <option value="">Seleccione un evaluador</option>
+            <option value="Karla Vacaflores">Karla Vacaflores</option>
+            <option value="Dubinka Ortiz">Dubinka Ortiz</option>
+            <option value="Ivan Mamani">Ivan Mamani</option>
+            <option value="Luis Verastegui">Luis Verastegui</option>
+            <option value="Luciana Sejas">Luciana Sejas</option>
+            <option value="Daniel Guevara">Daniel Guevara</option>
+            <option value="Adriana Pacheco">Adriana Pacheco</option>
+        </select>
+
+        <label for="nombreCliente">Nombre del Cliente:</label>
+        <input type="text" id="nombreCliente" name="nombreCliente" required>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <div class="encuesta" id="encuesta-satisfaccion">
+        <h1>Encuesta de Satisfacción</h1>
+        <h2>¿Cómo le atendieron en OK?</h2>
+        <div class="emoji-section">
+            <div class="emoji">
+                <img src="img/1-Photoroom.png" alt="Malo">
+                <span class="label">Malo</span>
+            </div>
+            <div class="emoji">
+                <img src="img/2-Photoroom.png" alt="Regular">
+                <span class="label">Regular</span>
+            </div>
+            <div class="emoji">
+                <img src="img/3-Photoroom.png" alt="Neutral">
+                <span class="label">Neutral</span>
+            </div>
+            <div class="emoji">
+                <img src="img/4-Photoroom.png" alt="Bueno">
+                <span class="label">Bueno</span>
+            </div>
+            <div class="emoji">
+                <img src="img/5-Photoroom.png" alt="Excelente">
+                <span class="label">Excelente</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mensaje-gracias">
+        <h2>¡Gracias por su calificación!</h2>
+        <button>Fin de la encuesta</button>
+    </div>
+</body>
+</html>
