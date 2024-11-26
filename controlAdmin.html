@@ -5,8 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control Administrativo</title>
     <link rel="stylesheet" href="controlAdmin.css">
+    <link rel="stylesheet" href="navbar.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="./img/Logos_Mesa de trabajo 1 copia.png" alt="Logo" />
+        </div>
+        <div class="nav-icons">
+            <button id="btn-back">
+                <img src="./img/flecha-izquierda.png" alt="Volver" class="icon">
+            </button>
+            <button id="btn-logout">
+                <img src="./img/cerrar-sesion.png" alt="Cerrar sesión" class="icon">
+            </button>
+        </div>
+    </nav>
     <h1>Control Administrativo</h1>
     <div id="menu-principal">
         <button id="btn-modificar-evaluador">Modificar Evaluador</button>
@@ -26,5 +41,6 @@
             window.location.href = "verEvaluaciones.html";
         });
     </script>
+    <script src="navbar.js"></script>
 </body>
 </html>
