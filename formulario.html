@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Evaluación</title>
+    <link rel="stylesheet" href="formulario.css">
+    <script type="module" src="formulario.js" defer></script>
+</head>
+<body>
+    <h1>Formulario de Evaluación</h1>
+    <form id="formulario-evaluacion">
+        <label for="evaluador">Nombre del Evaluador:</label>
+        <input type="text" id="evaluador" name="evaluador" readonly>
+        
+        <label for="nombreCliente">Nombre del Cliente:</label>
+        <input type="text" id="nombreCliente" name="nombreCliente" required>
+        
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>

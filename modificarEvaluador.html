@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Evaluadores</title>
+    <link rel="stylesheet" href="modificarEvaluador.css">
+    <script type="module" src="modificarEvaluador.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <h1>Agregar Evaluadores</h1>
+    <form id="form-agregar-evaluador">
+        <input type="text" id="nombreApellido" placeholder="Nombre y Apellido" required>
+        <input type="text" id="ci" placeholder="CI (Contraseña)" required>
+        <input type="text" id="cargo" placeholder="Cargo" required>
+        <button type="submit" id="btn-guardar">Guardar</button>
+    </form>
+
+    <h2>Lista de Evaluadores</h2>
+    <table id="tabla-evaluadores">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre y Apellido</th>
+                <th>Cargo</th>
+                <th>Eliminar</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Filas dinámicas generadas por JavaScript -->
+        </tbody>
+    </table>
+</body>
+</html>
